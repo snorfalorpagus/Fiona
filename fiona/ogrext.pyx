@@ -46,6 +46,8 @@ FIELD_TYPES = [
     'date',         # OFTDate, Date
     'time',         # OFTTime, Time
     'datetime',     # OFTDateTime, Date and Time
+    'int64',        # OFTInteger64, Single 64bit integer
+    None,           # OFTInteger64List, List of 64bit integers
     ]
 
 # Mapping of Fiona field type names to Python types.
@@ -55,7 +57,8 @@ FIELD_TYPES_MAP = {
     'str':      text_type,
     'date':     FionaDateType,
     'time':     FionaTimeType,
-    'datetime': FionaDateTimeType
+    'datetime': FionaDateTimeType,
+    'int64':    int,
    }
 
 # OGR Layer capability

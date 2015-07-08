@@ -148,7 +148,7 @@ class ReadingTest(unittest.TestCase):
         self.failUnlessEqual(s['NAME'], "str:80")
         self.failUnlessEqual(s['URL'], "str:101")
         self.failUnlessEqual(s['STATE_FIPS'], "str:80")
-        self.failUnlessEqual(s['WILDRNP020'], "int:10")
+        self.failUnlessEqual(s['WILDRNP020'], "int64")
 
     def test_closed_schema(self):
         # Schema is lazy too, never computed in this case. TODO?
