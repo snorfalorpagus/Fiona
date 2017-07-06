@@ -110,3 +110,23 @@ class PolygonRoundTripTest(unittest.TestCase):
         g = featureRT(f, self.c)
         self.assertEqual(g['properties']['title'], 'foo')
 
+class NullFieldRoundTripTest(unittest.TestCase):
+    def setUp(self):
+        self.tempdir = tempfile.mkdtemp()
+        schema = {'geometry': 'Point', 'properties': {'title': 'int'}}
+        self.c = Collection(os.path.join(self.tempdir, "foo.shp"),
+                            "w", driver="ESRI Shapefile", schema=schema)
+    def tearDown(self):
+        self.c.close()
+        shutil.rmtree(self.tempdir)
+    def test_null_int(self):
+        f = { 'id': '1', 
+              'geometry': {'type': 'Point', 'coordinates': (0.0, 0.0)},
+              'properties': {'title': None} }
+        g = featureRT(f, self.c)
+        self.assertEqual(g['properties']['title'], None)
+        f['properties']['title'] = 5
+        g = featureRT(f, self.c)
+        self.assertEqual(g['properties']['title'], 5)
+ 
+
