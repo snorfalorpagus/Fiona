@@ -45,7 +45,7 @@ install:
   - "pip wheel -r requirements-dev.txt"
   - "pip install -r requirements-dev.txt"
   - "python setup.py sdist"
-  - "pip install --upgrade --force-reinstall --global-option=build_ext --global-option='-I$GDALINST/gdal-$GDALVERSION/include' --global-option='-L$GDALINST/gdal-$GDALVERSION/lib' --global-option='-R$GDALINST/gdal-$GDALVERSION/lib' dist/Fiona*"
+  - "pip install --verbose --upgrade --force-reinstall --global-option=build_ext --global-option='-I$GDALINST/gdal-$GDALVERSION/include' --global-option='-L$GDALINST/gdal-$GDALVERSION/lib' --global-option='-R$GDALINST/gdal-$GDALVERSION/lib' dist/Fiona*"
   - "fio --version"
   - "cp -r tests /tmp"
 script: 
