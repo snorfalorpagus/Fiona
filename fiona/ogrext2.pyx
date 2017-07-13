@@ -29,6 +29,8 @@ from fiona.compat import OrderedDict
 from fiona.rfc3339 import parse_date, parse_datetime, parse_time
 from fiona.rfc3339 import FionaDateType, FionaDateTimeType, FionaTimeType
 
+from fiona._shim cimport is_field_null
+
 from libc.stdlib cimport malloc, free
 from libc.string cimport strcmp
 
@@ -177,7 +179,7 @@ cdef class FeatureBuilder:
 
             # TODO: other types
             fieldtype = FIELD_TYPES_MAP[fieldtypename]
-            if not ogrext2.OGR_F_IsFieldSet(feature, i):
+            if is_field_null(feature, i):
                 props[key] = None
             elif fieldtype is int:
                 props[key] = ogrext2.OGR_F_GetFieldAsInteger64(feature, i)
