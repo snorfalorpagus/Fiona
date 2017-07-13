@@ -19,7 +19,9 @@ cdef void gdal_flush_cache(void *cogr_ds):
         raise RuntimeError("Failed to sync to disk")
 
 cdef void* gdal_open_vector(const char *path_c, int mode, drivers):
-    cdef void* cogr_ds
+    cdef void* cogr_ds = NULL
+    cdef void* drv = NULL
+    cdef void* ds = NULL
     if drivers:
         for name in drivers:
             name_b = name.encode()

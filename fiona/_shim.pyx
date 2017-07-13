@@ -21,8 +21,9 @@ cdef void* gdal_open_vector(char* path_c, int mode, drivers):
         mode = GDAL_OF_UPDATE
     else:
         mode = GDAL_OF_READONLY
-    cdef void* cogr_ds
+    cdef void* cogr_ds = NULL
     cdef char **drvs = NULL
+    cdef void* drv = NULL
     if drivers:
         for name in drivers:
             name_b = name.encode()

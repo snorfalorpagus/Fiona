@@ -21,8 +21,9 @@ cdef void* gdal_open_vector(char* path_c, int mode, drivers):
         mode = GDAL_OF_UPDATE
     else:
         mode = GDAL_OF_READONLY
-    cdef void* cogr_ds
+    cdef void* cogr_ds = NULL
     cdef char **drvs = NULL
+    cdef void* drv = NULL
     if drivers:
         for name in drivers:
             name_b = name.encode()
@@ -32,7 +33,10 @@ cdef void* gdal_open_vector(char* path_c, int mode, drivers):
             if drv != NULL:
                 drvs = CSLAddString(drvs, name_c)
     
-    flags = GDAL_OF_VECTOR | mode
+    if mode == 1:
+        flags = GDAL_OF_VECTOR | GDAL_OF_UPDATE
+    else:
+        flags = GDAL_OF_VECTOR | GDAL_OF_READONLY
     try:
         cogr_ds = GDALOpenEx(
             path_c, flags, <const char *const *>drvs, NULL, NULL)
