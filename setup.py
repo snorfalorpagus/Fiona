@@ -197,8 +197,9 @@ if source_is_repo and "clean" not in sys.argv:
 
     if gdal_major_version == 1:
         log.info("Building Fiona for gdal 1.x: {0}".format(gdalversion))
-        shutil.copy('fiona/ogrext1.pyx', 'fiona/ogrext.pyx')
+        shutil.copy('fiona/ogrext2.pyx', 'fiona/ogrext.pyx')
         shutil.copy('fiona/_shim1.pyx', 'fiona/_shim.pyx')
+        shutil.copy('fiona/_shim1.pxd', 'fiona/_shim.pxd')
     elif gdal_major_version == 2:
         log.info("Building Fiona for gdal 2.x: {0}".format(gdalversion))
         shutil.copy('fiona/ogrext2.pyx', 'fiona/ogrext.pyx')
@@ -206,8 +207,10 @@ if source_is_repo and "clean" not in sys.argv:
         # TODO
         if gdal_minor_version >= 2:
             shutil.copy('fiona/_shim22.pyx', 'fiona/_shim.pyx')
+            shutil.copy('fiona/_shim22.pxd', 'fiona/_shim.pxd')
         else:
             shutil.copy('fiona/_shim2.pyx', 'fiona/_shim.pyx')
+            shutil.copy('fiona/_shim2.pxd', 'fiona/_shim.pxd')
 
     ext_modules = cythonize([
         Extension('fiona._geometry', ['fiona/_geometry.pyx'], **ext_options),
