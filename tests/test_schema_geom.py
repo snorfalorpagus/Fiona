@@ -102,10 +102,9 @@ def test_unknown(filename_json):
         filename_dst = filename_json.replace(".json", "_v2.json")
         assert src.schema["geometry"] == "Unknown"
         with fiona.open(filename_dst, "w", **src.meta) as dst:
-            for feature in src:
-                print(feature)
-                dst.write(feature)
-            dst.writerecords(src)
+            features = list(src)
+            print(features)
+            dst.writerecords(features)
     
     assert 0
 
