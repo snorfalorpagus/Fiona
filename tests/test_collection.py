@@ -941,7 +941,11 @@ def test_overwrite_with_different_driver(tmpdir, driver1, driver2):
     """
     Create a new layer with driver A, then attempt to create a new layer with
     the same filename but with driver B. The expected result is the new file
-    uses driver B rather than inheriting driver A from the existing file.
+    uses driver B rather than inheriting driver A from the existing file. In
+    the case where this would result in an ESRI Shapefile with the wrong
+    extension the original file is replaced with a folder of the same name,
+    with the new shapefile created inside (the same behaviour as if the
+    original file had not existed).
     See GH #568.
     """
     
@@ -963,4 +967,8 @@ def test_overwrite_with_different_driver(tmpdir, driver1, driver2):
     # check format of output file
     with fiona.open(filename, "r") as collection:
         assert collection.driver == driver2
+    
+    filenames = os.listdir(str(tmpdir))
+    for filename in filenames:
+        print(filename, os.path.isfile(filename), os.path.isdir(filename))
         

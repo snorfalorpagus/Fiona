@@ -817,7 +817,7 @@ cdef class WritingSession(Session):
                     os.unlink(path)
                 try:
                     # attempt to open existing dataset in write mode
-                    cogr_ds = gdal_open_vector(path_c, 1, None, kwargs)
+                    cogr_ds = gdal_open_vector(path_c, 1, collection.driver, kwargs)
                 except DriverError:
                     # failed, attempt to create it
                     cogr_ds = gdal_create(cogr_driver, path_c, kwargs)
