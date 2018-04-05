@@ -931,4 +931,36 @@ def test_collection_zip_http():
     ds = fiona.Collection('http://svn.osgeo.org/gdal/trunk/autotest/ogr/data/poly.zip', vsi='zip+http')
     assert ds.path == '/vsizip/vsicurl/http://svn.osgeo.org/gdal/trunk/autotest/ogr/data/poly.zip'
     assert len(ds) == 10
+
+
+@pytest.mark.parametrize("driver1, driver2", [
+    ("ESRI Shapefile", "GeoJSON"),
+    ("GeoJSON", "ESRI Shapefile")
+])
+def test_overwrite_with_different_driver(tmpdir, driver1, driver2):
+    """
+    Create a new layer with driver A, then attempt to create a new layer with
+    the same filename but with driver B. The expected result is the new file
+    uses driver B rather than inheriting driver A from the existing file.
+    See GH #568.
+    """
+    
+    schema = {"geometry": "Point", "properties": {"city": "str"}}
+    features = [{"geometry": {"type": "Point", "coordinates": [1.0, 2.0]}, "properties": {"city": "London"}}]
+    extension = "shp" if driver1 == "ESRI Shapefile" else "geojson"
+    filename = str(tmpdir.join("filename.{}".format(extension)))
+    
+    # create a shapefile
+    with fiona.open(filename, "w", schema=schema, driver=driver1) as collection:
+        collection.writerecords(features)
+    
+    assert os.path.exists(filename)
+    
+    # attempt to create a geojson file with the name of the shapefile (and extension!)
+    with fiona.open(filename, "w", schema=schema, driver=driver2) as collection:
+        collection.writerecords(features)
+
+    # check format of output file
+    with fiona.open(filename, "r") as collection:
+        assert collection.driver == driver2
         
