@@ -21,7 +21,7 @@ steps:
     versionSpec: '$(python.version)'
   displayName: 'Use Python $(python.version)'
 
-- powershell: |
+- script: |
     curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7.zip --output gdalbin.zip
     7z x gdalbin.zip -oC:\gdal
     curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7-libs.zip --output gdallibs.zip
