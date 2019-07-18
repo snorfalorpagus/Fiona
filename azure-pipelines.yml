@@ -40,6 +40,6 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest pytest-azurepipelines
+    pip install --upgrade pytest pytest-azurepipelines
     python -m pytest -m \"not iconv and not wheel\" --cov fiona --cov-report term-missing
   displayName: 'pytest'
