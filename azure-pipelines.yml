@@ -22,14 +22,15 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
-    curl http://download.gisinternals.com/sdk/downloads/%GIS_INTERNALS% --output gdalbin.zip
+    curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7.zip --output gdalbin.zip
     7z x gdalbin.zip -oC:\gdal
-    curl http://download.gisinternals.com/sdk/downloads/%GIS_INTERNALS_LIBS% --output gdallibs.zip
+    curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7-libs.zip --output gdallibs.zip
     7z x gdallibs.zip -oC:\gdal
 
     set PATH=C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;%PATH%
     set GDAL_DATA=C:\\gdal\\bin\\gdal-data
     set PACKAGE_DATA=1
+    set GDAL_VERSION=2.3.0
 
     python -m pip install --upgrade pip
     python -m pip install -r requirements-dev.txt
