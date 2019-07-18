@@ -22,8 +22,18 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
+    curl http://download.gisinternals.com/sdk/downloads/%GIS_INTERNALS% --output gdalbin.zip
+    7z x gdalbin.zip -oC:\gdal
+    curl http://download.gisinternals.com/sdk/downloads/%GIS_INTERNALS_LIBS% --output gdallibs.zip
+    7z x gdallibs.zip -oC:\gdal
+
+    set PATH=C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;%PATH%
+    set GDAL_DATA=C:\\gdal\\bin\\gdal-data
+    set PACKAGE_DATA=1
+
     python -m pip install --upgrade pip
-    pip setup.py build_ext
+    python -m pip install -r requirements-dev.txt
+    python setup.py build_ext
   displayName: 'Install dependencies'
 
 - script: |
