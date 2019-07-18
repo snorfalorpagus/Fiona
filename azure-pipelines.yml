@@ -30,14 +30,18 @@ steps:
     set PATH=C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;%PATH%
     set GDAL_DATA=C:\\gdal\\bin\\gdal-data
     set PACKAGE_DATA=1
+
     set GDAL_VERSION=2.3.0
 
     python -m pip install --upgrade pip
     python -m pip install -r requirements-dev.txt
-    python setup.py build_ext
+    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib bdist_wheel --gdalversion %GDAL_VERSION%
+
+    python setup.py install
+
   displayName: 'Install dependencies'
 
 - script: |
     pip install pytest pytest-azurepipelines
-    pytest
+    python -m pytest -m \"not iconv and not wheel\" --cov fiona --cov-report term-missing
   displayName: 'pytest'
