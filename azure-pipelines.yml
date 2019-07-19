@@ -47,6 +47,8 @@ steps:
 
   env:
     GDAL_DATA: "C:\\gdal\\bin\\gdal-data"
+    SSL_CERT_FILE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
+    CURL_CA_BUNDLE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
     PACKAGE_DATA: "1"  # Include GDAL libs in the wheel
 
   displayName: 'Install dependencies'
