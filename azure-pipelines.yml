@@ -24,10 +24,10 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - powershell: |
-    curl http://download.gisinternals.com/sdk/downloads/$(gdal_bin) --output gdalbin.zip
-    7z x gdalbin.zip -oC:\gdal
-    curl http://download.gisinternals.com/sdk/downloads/$(gdal_libs) --output gdallibs.zip
-    7z x gdallibs.zip -oC:\gdal
+    Invoke-WebRequest http://download.gisinternals.com/sdk/downloads/$(gdal_bin) -OutFile gdalbin.zip
+    Expand-Archive -Path gdalbin.zip -DestinationPath C:\gdal
+    Invoke-WebRequest http://download.gisinternals.com/sdk/downloads/$(gdal_libs) -OutFile gdallibs.zip
+    Expand-Archive -Path gdallibs.zip -DestinationPath C:\gdal
 
     # Prepend GDAL to the PATH
     $Env:PATH = "C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;" + $Env:PATH
