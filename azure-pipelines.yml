@@ -14,6 +14,8 @@ strategy:
     #   python.version: '2.7'
     Python37:
       python.version: '3.7'
+      gdal_bin: "release-1911-x64-gdal-2-3-0-mapserver-7-0-7.zip"
+      gdal_libs: "release-1911-x64-gdal-2-3-0-mapserver-7-0-7-libs.zip"
 
 steps:
 - task: UsePythonVersion@0
@@ -21,15 +23,14 @@ steps:
     versionSpec: '$(python.version)'
   displayName: 'Use Python $(python.version)'
 
-- script: |
-    curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7.zip --output gdalbin.zip
+- powershell: |
+    curl http://download.gisinternals.com/sdk/downloads/$(gdal_bin) --output gdalbin.zip
     7z x gdalbin.zip -oC:\gdal
-    curl http://download.gisinternals.com/sdk/downloads/release-1911-x64-gdal-2-3-0-mapserver-7-0-7-libs.zip --output gdallibs.zip
+    curl http://download.gisinternals.com/sdk/downloads/$(gdal_libs) --output gdallibs.zip
     7z x gdallibs.zip -oC:\gdal
 
-    set PATH=C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;%PATH%
-    set GDAL_DATA=C:\\gdal\\bin\\gdal-data
-    set PACKAGE_DATA=1
+    # Prepend GDAL to the PATH
+    $Env:PATH = "C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;" + $Env:PATH
 
     # copy gisinternal gdal librarys into .libs
     xcopy C:\gdal\bin\*.dll fiona\.libs\
@@ -43,6 +44,10 @@ steps:
     #move fiona fiona.build
 
     python -m pytest -m "not iconv and not wheel"
+
+  env:
+    GDAL_DATA: "C:\\gdal\\bin\\gdal-data"
+    PACKAGE_DATA: "1"  # Include GDAL libs in the wheel
 
   displayName: 'Install dependencies'
 
