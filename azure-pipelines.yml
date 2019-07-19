@@ -37,14 +37,16 @@ steps:
 
     python -m pip install --upgrade pip
     python -m pip install -r requirements-dev.txt
-    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib --gdalversion 2.3.0 bdist_wheel
+    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib --gdalversion 2.3.0 develop
 
-    pip install dist\Fiona-1.8.6-cp37-cp37m-win_amd64.whl
-    move fiona fiona.build
+    #pip install dist\Fiona-1.8.6-cp37-cp37m-win_amd64.whl
+    #move fiona fiona.build
+
+    python -m pytest -m "not iconv and not wheel"
 
   displayName: 'Install dependencies'
 
-- script: |
-    pip install --upgrade pytest pytest-azurepipelines
-    python -m pytest -m \"not iconv and not wheel\" --cov fiona --cov-report term-missing
-  displayName: 'pytest'
+# - script: |
+#     pip install --upgrade pytest pytest-azurepipelines
+#     python -m pytest -m \"not iconv and not wheel\" --cov fiona --cov-report term-missing
+#   displayName: 'pytest'
