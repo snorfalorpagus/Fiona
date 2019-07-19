@@ -31,9 +31,13 @@ steps:
     set GDAL_DATA=C:\\gdal\\bin\\gdal-data
     set PACKAGE_DATA=1
 
+    # copy gisinternal gdal librarys into .libs
+    xcopy C:\gdal\bin\*.dll fiona\.libs\
+    xcopy C:\gdal\*.rtf fiona\.libs\licenses\
+
     python -m pip install --upgrade pip
     python -m pip install -r requirements-dev.txt
-    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib bdist_wheel --gdalversion 2.3.0 bdist_wheel
+    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib --gdalversion 2.3.0 bdist_wheel
 
     pip install dist\Fiona-1.8.6-cp37-cp37m-win_amd64.whl
     move fiona fiona.build
