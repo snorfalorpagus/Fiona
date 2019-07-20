@@ -61,10 +61,10 @@ steps:
   displayName: 'Build and test'
 
 - task: CopyFiles@2
-   inputs:
-     contents: dist/**
-     targetFolder: '$(Build.ArtifactStagingDirectory)'
+  inputs:
+    contents: dist/**
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
-   inputs:
-     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-     artifactName: Fiona_Wheel
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: Fiona_Wheel
