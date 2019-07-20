@@ -32,28 +32,35 @@ steps:
     # Prepend GDAL to the PATH
     $Env:PATH = "C:\\gdal;C:\\gdal\\bin;C:\\gdal\\data;C:\\gdal\\bin\\gdal\\apps;" + $Env:PATH
 
-    # copy gisinternal gdal librarys into .libs
+    # Copy GDAL librarys into .libs
     xcopy C:\gdal\bin\*.dll fiona\.libs\
     xcopy C:\gdal\*.rtf fiona\.libs\licenses\
 
+    # Install module dependencies
     python -m pip install --upgrade pip
     python -m pip install -r requirements-dev.txt
-    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib --gdalversion 2.3.0 develop
+  displayName: 'Install dependencies'
 
-    #pip install dist\Fiona-1.8.6-cp37-cp37m-win_amd64.whl
-    #move fiona fiona.build
 
+- powershell: |
+    # Build Fiona!
+    python setup.py build_ext -IC:\\gdal\\include -lgdal_i -LC:\\gdal\\lib --gdalversion 2.3.0 bdist_wheel
+  env:
+    GDAL_DATA: "C:\\gdal\\bin\\gdal-data"
+    PACKAGE_DATA: "1"  # Include GDAL libs in the wheel
+  displayName: 'Build'
+    
+- powershell: |
+    # Install the wheel
+    python -m pip install --force-reinstall --ignore-installed (Get-ChildItem dist\*.whl | % { "$_" })
+
+    # Move the build folder to ensure we're not importing it
+    move fiona fiona.build
+
+    # Run tests
     python -m pytest -m "not iconv and not wheel"
-
   env:
     GDAL_DATA: "C:\\gdal\\bin\\gdal-data"
     SSL_CERT_FILE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
     CURL_CA_BUNDLE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
-    PACKAGE_DATA: "1"  # Include GDAL libs in the wheel
-
-  displayName: 'Install dependencies'
-
-# - script: |
-#     pip install --upgrade pytest pytest-azurepipelines
-#     python -m pytest -m \"not iconv and not wheel\" --cov fiona --cov-report term-missing
-#   displayName: 'pytest'
+  displayName: 'Build'
