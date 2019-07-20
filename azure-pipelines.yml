@@ -50,7 +50,7 @@ steps:
     move fiona fiona.build
 
     # Run tests
-    python -m pip --upgrade pytest pytest-azurepipelines
+    python -m pip --update pytest pytest-azurepipelines
     python -m pytest -m "not iconv and not wheel"
   env:
     GDAL_DATA: "C:\\gdal\\bin\\gdal-data"
