@@ -62,9 +62,9 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: dist/**
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'dist/**'
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: Fiona_Wheel
+    artifactName: Wheel
