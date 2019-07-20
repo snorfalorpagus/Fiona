@@ -59,3 +59,12 @@ steps:
     SSL_CERT_FILE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
     CURL_CA_BUNDLE: "C:\\gdal\\bin\\curl\\curl-ca-bundle.crt"
   displayName: 'Build and test'
+
+- task: CopyFiles@2
+   inputs:
+     contents: dist/**
+     targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+   inputs:
+     pathtoPublish: $(Build.ArtifactStagingDirectory)
+     artifactName: Fiona_Wheel
