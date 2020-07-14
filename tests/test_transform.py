@@ -52,5 +52,4 @@ def test_transform_geom_with_z(geom):
 
 def test_transform_bug():
     result = transform.transform("epsg:4326", "epsg:3857", [-75.71], [38.06])
-    print(result)
-    assert result == ([-8427998.647958742], [4587905.271362515])
+    assert result == tuple([pytest.approx(n, abs=1e-6)] for n in (-8427998.647958742, 4587905.271362515))
