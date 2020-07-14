@@ -48,3 +48,9 @@ from fiona import transform
 def test_transform_geom_with_z(geom):
     """Transforming a geom with Z succeeds"""
     g2 = transform.transform_geom("epsg:4326", "epsg:3857", geom, precision=3)
+
+
+def test_transform_bug():
+    result = transform.transform("epsg:4326", "epsg:3857", [-75.71], [38.06])
+    print(result)
+    assert result == ([-8427998.647958742], [4587905.271362515])
